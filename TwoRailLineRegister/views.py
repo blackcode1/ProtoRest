@@ -107,8 +107,7 @@ def Register(request):
 					elif type == "Boolean":
 						iotdb_type = "BOOLEAN"
 						iotdb_encoding = "RLE"
-					work_condition.append((name, iotdb_type))
-					work_condition.append((name, iotdb_encoding))
+					work_condition.append((name, iotdb_type , iotdb_encoding))
 	
 		for car in car_qr:
 			car_id = car["plt_carid"]
