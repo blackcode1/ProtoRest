@@ -103,19 +103,27 @@ def Register(request):
 					name = tempara["plt_paraid"]
 					type = tempara["plt_datatype"]
 					iotdb_type = ""
+					iotdb_encoding = ""
 					if type == "Int":
 						iotdb_type = "INT32"
+						iotdb_encoding = "RLE"
 					elif type == "Long":
 						iotdb_type = "INT64"
+						iotdb_encoding = "RLE"
 					elif type == "Float":
 						iotdb_type = "FLOAT"
+						iotdb_encoding = "GORILLA"
 					elif type == "Double":
 						iotdb_type = "DOUBLE"
+						iotdb_encoding = "GORILLA"
 					elif type == "String":
 						iotdb_type = "TEXT"
+						iotdb_encoding = "PLAIN"
 					elif type == "Boolean":
 						iotdb_type = "BOOLEAN"
+						iotdb_encoding = "RLE"
 					work_condition.append((name, iotdb_type))
+					work_condition.append((name, iotdb_encoding))
 	
 		for car in carList:
 			if (car["plt_railline"] != roid):
@@ -147,7 +155,7 @@ def Register(request):
 				for i in range(1,7):
 					for wc in work_condition:
 						try:
-							iotdb_sql = "create timeseries " + storage_group + "." + "Carriage" + str(i) + "." + wc[0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							iotdb_sql = "create timeseries " + storage_group + "." + "Carriage" + str(i) + "." + wc[0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 							iotdb_curs.execute(iotdb_sql)
 						except Exception as e:
 							if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -155,7 +163,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage11." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -163,7 +171,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage12." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -171,7 +179,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage21." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -179,7 +187,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage22." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -187,7 +195,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage31." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -195,7 +203,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage32." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -203,7 +211,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage41." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -211,7 +219,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage42." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -219,7 +227,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage51." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -227,7 +235,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage52." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -235,7 +243,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage61." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
@@ -243,7 +251,7 @@ def Register(request):
 				for wc in work_condition:
 					try:
 						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage62." + wc[
-							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+							0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):

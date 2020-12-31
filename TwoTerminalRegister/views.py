@@ -102,19 +102,27 @@ def Register(request):
 					name = tempara["plt_paraid"]
 					type = tempara["plt_datatype"]
 					iotdb_type = ""
+					iotdb_encoding = ""
 					if type == "Int":
 						iotdb_type = "INT32"
+						iotdb_encoding = "RLE"
 					elif type == "Long":
 						iotdb_type = "INT64"
+						iotdb_encoding = "RLE"
 					elif type == "Float":
 						iotdb_type = "FLOAT"
+						iotdb_encoding = "GORILLA"
 					elif type == "Double":
 						iotdb_type = "DOUBLE"
+						iotdb_encoding = "GORILLA"
 					elif type == "String":
 						iotdb_type = "TEXT"
+						iotdb_encoding = "PLAIN"
 					elif type == "Boolean":
 						iotdb_type = "BOOLEAN"
+						iotdb_encoding = "RLE"
 					work_condition.append((name, iotdb_type))
+					work_condition.append((name, iotdb_encoding))
 	
 		for car in carList:
 			if (car["plt_railline"] != roid):
@@ -140,7 +148,7 @@ def Register(request):
 						errors.append(str(e))
 				for wc in work_condition:
 					try:
-						iotdb_sql = "create timeseries " + storage_group + "." + wc[0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_sql = "create timeseries " + storage_group + "." + wc[0] + " with datatype=" + wc[1] + ",encoding=" + wc[2]
 						iotdb_curs.execute(iotdb_sql)
 					except Exception as e:
 						if (str(e) != 'java.sql.SQLException: Method not supported'):
