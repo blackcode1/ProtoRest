@@ -38,6 +38,24 @@ def addContent(elem, content):
 			
 # Create your views here.
 def XMLexport(request):
+	from configparser import ConfigParser
+	import os
+	conn = ConfigParser()
+
+	file_path = os.path.join(os.path.abspath('.'), 'config.ini')
+	if not os.path.exists(file_path):
+		raise FileNotFoundError("文件不存在")
+
+	conn.read(file_path)
+	pghost = conn.get('api', 'pghost')
+	pgport = conn.get('api' , 'pgport')
+	pguser = conn.get('api', 'pguser')
+	pgpassword = conn.get('api', 'pgpassword')
+	pgdatabase = conn.get('api', 'pgdatabase')
+	iotdbIp = conn.get('api', 'iotdbIp')
+	iotdbUser = conn.get('api', 'iotdbUser')
+	iotdbPassword = conn.get('api', 'iotdbPassword')
+
 	'''print(request.POST)
 	if not request.POST.get('pOidList'):
 		print('No poidList!')
@@ -67,7 +85,8 @@ def XMLexport(request):
 	canIDList = ET.SubElement(protocol, 'canIDList')
 
 	#psycopg2数据库连接 To-Do: 改为从配置文件读取
-	conn = psycopg2.connect(host = '192.168.70.194', port = 8180, user = 'postgres', password = '123456', database='dataway')
+	# conn = psycopg2.connect(host = '172.16.50.7', port = 5432, user = 'postgres', password = '123456', database='protodw')
+	conn = psycopg2.connect(host=pghost, port=pgport, user=pguser, password=pgpassword, database=pgdatabase)
 	cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 	#协议处理方案集合
 	ptsOidSet = set([])

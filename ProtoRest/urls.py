@@ -23,6 +23,9 @@ urlpatterns = [
 	url(r'^proto/Register/RailLine', include('RailLineRegister.urls')),
 	url(r'^proto/Register/Car', include('CarRegister.urls')),
 	url(r'^proto/Register/Terminal', include('TerminalRegister.urls')),
+	url(r'^proto/Register/TwoRailLine', include('TwoRailLineRegister.urls')),
+	url(r'^proto/Register/TwoCar', include('TwoCarRegister.urls')),
+	url(r'^proto/Register/TwoTerminal', include('TwoTerminalRegister.urls')),
 	url(r'^proto/Query/IoTDB', include('iotdbQuery.urls'))
 
 ]

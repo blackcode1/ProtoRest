@@ -5,16 +5,47 @@ import psycopg2.extras
 import json
 from django.shortcuts import render
 from django.http import HttpResponse
+import jpype
 
+def get_jdbc_connection(iotdbIp , iotdbUser , iotdbPassword):
+
+        if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
+            jpype.java.lang.Thread.currentThread().setContextClassLoader(jpype.java.lang.ClassLoader.getSystemClassLoader())
+        connection = JDBC.connect('org.apache.iotdb.jdbc.IoTDBDriver', iotdbIp, [iotdbUser, iotdbPassword],
+					 'iotdb-jdbc-0.9.0-SNAPSHOT-jar-with-dependencies.jar')
+
+        return connection
 # Create your views here.
 def Register(request):
-	iotdb_conn = JDBC.connect('org.apache.iotdb.jdbc.IoTDBDriver', "jdbc:iotdb://192.168.70.195:6667/", ['root', 'root'], 'iotdb-jdbc-0.8.0-SNAPSHOT-jar-with-dependencies.jar')
+	from configparser import ConfigParser
+	import os
+	conn = ConfigParser()
+
+	file_path = os.path.join(os.path.abspath('.'), 'config.ini')
+	if not os.path.exists(file_path):
+		raise FileNotFoundError("文件不存在")
+
+	conn.read(file_path)
+	pghost = conn.get('api', 'pghost')
+	pgport = conn.get('api' , 'pgport')
+	pguser = conn.get('api', 'pguser')
+	pgpassword = conn.get('api', 'pgpassword')
+	pgdatabase = conn.get('api', 'pgdatabase')
+	iotdbIp = conn.get('api', 'iotdbIp')
+	iotdbUser = conn.get('api', 'iotdbUser')
+	iotdbPassword = conn.get('api', 'iotdbPassword')
+
+	#iotdb_conn = JDBC.connect('org.apache.iotdb.jdbc.IoTDBDriver', "jdbc:iotdb://192.168.3.31:6667/", ['root', 'root'], 'iotdb-jdbc-0.9.0-SNAPSHOT-jar-with-dependencies.jar')
+	iotdb_conn = get_jdbc_connection(iotdbIp , iotdbUser , iotdbPassword)
 	iotdb_curs = iotdb_conn.cursor()
-	conn = psycopg2.connect(host = '192.168.70.194', port = 8180, user = 'postgres', password = '123456', database='dataway')
+	# conn = psycopg2.connect(host = '172.16.50.7', port = 5432, user = 'postgres', password = '123456', database='protodw')
+	conn = psycopg2.connect(host=pghost, port=pgport, user=pguser, password=pgpassword, database=pgdatabase)
 	cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 	x = print(request.POST)
 	print(request.body)
+	print("1")
 	body = json.loads(str(request.body, encoding = 'utf8'))
 	if not body['roidList']:
 		print('No roidList!')
@@ -82,9 +113,9 @@ def Register(request):
 				position = terminal["plt_position"]
 				terminal_id = terminal["plt_terminalid"]
 				if position == "车头":
-					terminal_id = "head"
+					terminal_id = "Head"
 				elif position == "车尾":
-					terminal_id = "tail"
+					terminal_id = "Tail"
 				storage_group = "root." + line_id + "." + car_id + "." + terminal_id
 				iotdb_sql = "set storage group to " + storage_group
 				try:
@@ -106,6 +137,102 @@ def Register(request):
 						except Exception as e:
 							if (str(e) != 'java.sql.SQLException: Method not supported'):
 								errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage11." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage12." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage21." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage22." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage31." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage32." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage41." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage42." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage51." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage52." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage61." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
+				for wc in work_condition:
+					try:
+						iotdb_sql = "create timeseries " + storage_group + "." + "Carriage62." + wc[
+							0] + " with datatype=" + wc[1] + ",encoding=PLAIN"
+						iotdb_curs.execute(iotdb_sql)
+					except Exception as e:
+						if (str(e) != 'java.sql.SQLException: Method not supported'):
+							errors.append(str(e))
 	iotdb_curs.close()
 	iotdb_conn.close()
 	cursor.close()

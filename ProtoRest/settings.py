@@ -25,7 +25,7 @@ SECRET_KEY = 'bd*6uhjp5@!z3g%it29l$q-%swx_&#gfps%$eesmzv!i2pfmwb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.16.244.15']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,7 +42,11 @@ INSTALLED_APPS = [
 	'RailLineRegister',
 	'CarRegister',
 	'TerminalRegister',
+    'TwoRailLineRegister',
+	'TwoCarRegister',
+	'TwoTerminalRegister',
 	'iotdbQuery'
+
 ]
 
 MIDDLEWARE = [
