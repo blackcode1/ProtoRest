@@ -15,7 +15,7 @@ def get_jdbc_connection(iotdbIp , iotdbUser , iotdbPassword):
             jpype.attachThreadToJVM()
             jpype.java.lang.Thread.currentThread().setContextClassLoader(jpype.java.lang.ClassLoader.getSystemClassLoader())
         connection = JDBC.connect('org.apache.iotdb.jdbc.IoTDBDriver', iotdbIp, [iotdbUser, iotdbPassword],
-					 'iotdb-jdbc-0.9.0-SNAPSHOT-jar-with-dependencies.jar')
+					 'iotdb-jdbc-0.11.3-SNAPSHOT-jar-with-dependencies.jar')
 
         return connection
 def Query(request):
